@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deus Enviou Um Sinal Para Você</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+<!-- Preloads VSLplay -->
+<link rel="preconnect" href="https://iframe.vslplay.com">
+<link rel="preconnect" href="https://api.vslplay.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preload" as="script" href="https://iframe.vslplay.com/35d19f4f-7b69-4333-8936-8d35a99e1929">
+<link rel="preload" as="script" href="https://www.youtube.com/iframe_api">
+<style>
+  :root {
+    --gold: #C5932A;
+    --gold-light: #E8C86A;
+    --gold-dark: #9A7420;
+    --warm-white: #FDFBF7;
+    --cream: #F7F0E3;
+    --brown: #4A3728;
+    --text: #3D2E22;
+    --text-light: #7A6B60;
+    --red-accent: #8B2E2E;
+    --green-soft: #2E5C3A;
+    
+    /* Cores Amazon */
+    --amazon-yellow: #FFD814;
+    --amazon-border: #FCD200;
+    --amazon-hover: #F7CA00;
+    --text-dark: #0F1111;
+    --red-alert: #B12704;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--warm-white);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C5932A' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: linear-gradient(135deg, var(--red-accent), #A03636);
+    color: #fff;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .top-bar .dot {
+    width: 8px;
+    height: 8px;
+    background: #FF6B6B;
+    border-radius: 50%;
+    animation: pulse 1.4s infinite;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 44px 0 10px;
+  }
+
+  .signal-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, rgba(197,147,42,0.12), rgba(197,147,42,0.04));
+    border-radius: 50%;
+    margin-bottom: 22px;
+    border: 2px solid rgba(197,147,42,0.2);
+    animation: glowPulse 2.5s ease-in-out infinite;
+  }
+
+  .signal-icon span { font-size: 34px; }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 7vw, 40px);
+    font-weight: 800;
+    color: var(--brown);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .header h1 em { color: var(--gold-dark); font-style: italic; }
+
+  .header p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(17px, 4vw, 21px);
+    color: var(--text-light);
+    font-style: italic;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .divider {
+    text-align: center;
+    padding: 18px 0;
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 10px;
+    opacity: 0.4;
+  }
+
+  /* VIDEO SECTION */
+  .video-section { padding: 0 0 16px; }
+
+  /* ESTILO AMAZON BUTTON */
+  .btn-amazon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+    background: var(--amazon-yellow);
+    border: 1px solid var(--amazon-border);
+    border-radius: 8px;
+    color: var(--text-dark);
+    font-family: 'Arial', sans-serif;
+    font-size: 19px;
+    font-weight: bold;
+    padding: 14px 20px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px auto 10px;
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    transition: background 0.2s;
+  }
+
+  .btn-amazon:hover { background: var(--amazon-hover); }
+
+  /* Ícone da Mãozinha (Referência Amazon) */
+  .btn-amazon .icon-box {
+    background: #333;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* BOTÃO RECUSA */
+  .btn-refuse-link {
+    display: block;
+    color: #666;
+    font-size: 13px;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 10px;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* POPUP OVERLAY */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .popup {
+    background: white;
+    max-width: 500px;
+    width: 100%;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .popup h2 { color: var(--red-alert); font-size: 20px; margin-bottom: 15px; font-family: 'Arial', sans-serif; }
+  .popup p { font-size: 15px; color: #444; margin-bottom: 15px; }
+  .highlight { background: #fff000; padding: 2px 5px; font-weight: bold; }
+
+  textarea {
+    width: 100%;
+    height: 80px;
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: sans-serif;
+  }
+
+  .flex-buttons { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+
+  .btn-popup-no {
+    background: #e7e9ec;
+    border: 1px solid #adb1b8;
+    color: #111;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .btn-popup-apply {
+    background: var(--amazon-yellow);
+    border: 1px solid var(--amazon-border);
+    color: var(--text-dark);
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  /* ELEMENTOS BASE */
+  .esconder { display: none; text-align: center; padding: 20px 0; }
+  .verse-mini {
+    text-align: center;
+    padding: 28px 10px;
+    margin: 30px 0;
+    background: linear-gradient(135deg, rgba(197,147,42,0.05), rgba(197,147,42,0.02));
+    border-radius: 16px;
+    border: 1px solid rgba(197,147,42,0.1);
+  }
+  .footer-mini { text-align: center; padding: 20px; font-size: 11px; color: var(--text-light); opacity: 0.5; }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } }
+</style>
+
+<!-- UTMify -->
+<script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-xcod-sck
+  data-utmify-prevent-subids
+  data-utmify-ignore-iframe
+  async
+  defer
+></script>
+
+<script>
+  window.pixelId = "69fcfdb6f55b7d2fbf54748b";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+<!-- /UTMify -->
+</head>
+<body>
+
+<div style="text-align:center; color: #1BD234; font-size: 26px; font-weight: 700; padding: 10px 0;">
+Seu pagamento foi efetuado com sucesso!
+</div>
+
+
+<div class="top-bar">
+  <span class="dot"></span>
+  NÃO FECHE ESTA PÁGINA — Seu pedido ainda pode dar erro!
+</div>
+
+<div class="page">
+  <section class="header">
+    <div class="signal-icon"><span>✝</span></div>
+    <h1>Deus enviou um <em>sinal</em> para você</h1>
+    <p>O Padre Paulo tem uma mensagem urgente e pessoal para você.</p>
+  </section>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <section class="video-section">
+    <div style="width:100%;max-width:360px;margin:auto">
+      <div style="position:relative;width:100%;overflow:hidden;padding-top:177.7%;transition:0.25s;" data-vslplay="35d19f4f-7b69-4333-8936-8d35a99e1929">
+        <iframe style="position:absolute;top:0;left:0;bottom:0;right:0;width:100%;height:100%" src="https://iframe.vslplay.com/35d19f4f-7b69-4333-8936-8d35a99e1929" scrolling="no" frameborder="0" allowfullscreen="" allowtransparency="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <div class="esconder">
+    <a href="https://pay.cakto.com.br/8zfasez_865974" class="btn-amazon">
+      <div class="icon-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5C12.88 5 14 6.12 14 7.5V11.24C15.07 11.5 16.05 12.04 16.78 12.78C17.5 13.5 18 14.5 18 15.5V19C18 21.21 16.21 23 14 23H9C6.79 23 5 21.21 5 19V15.5C5 14.5 5.5 13.5 6.22 12.78C6.95 12.04 7.93 11.5 9 11.24ZM11.5 1C12.05 1 12.5 1.45 12.5 2V3C12.5 3.55 12.05 4 11.5 4C10.95 4 10.5 3.55 10.5 3V2C10.5 1.45 10.95 1 11.5 1ZM15.54 2.46C15.93 2.07 16.57 2.07 16.96 2.46L17.67 3.17C18.06 3.56 18.06 4.2 17.67 4.59C17.28 4.98 16.64 4.98 16.25 4.59L15.54 3.88C15.15 3.49 15.15 2.85 15.54 2.46ZM7.46 2.46C7.85 2.85 7.85 3.49 7.46 3.88L6.75 4.59C6.36 4.98 5.72 4.98 5.33 4.59C4.94 4.2 4.94 3.56 5.33 3.17L6.04 2.46C6.43 2.07 7.07 2.07 7.46 2.46Z"/>
+        </svg>
+      </div>
+      SIM! QUERO RECEBER MINHAS BENÇÃOS.
+    </a>
+<span class="btn-refuse-link" onclick="abrirPopup()">
+      Não, prefiro seguir o caminho mais difícil...
+    </span>
+</div>
+
+  <section class="verse-mini">
+    <blockquote>"Eis que estou à porta e bato; se alguém ouvir a minha voz e abrir a porta, entrarei."</blockquote>
+    <cite>— Apocalipse 3:20</cite>
+  </section>
+
+  <div class="footer-mini">
+    Manuscrito Sagrado &copy; 2026 — Todos os direitos reservados.
+  </div>
+</div>
+
+<div class="overlay" id="popupDesconto">
+  <div class="popup">
+    <h2>ESPERE! VOCÊ PODE TER UM DESCONTO</h2>
+    <p>Queremos que o <strong>Manuscrito Sagrado</strong> ajude o maior número possível de pessoas. Você está passando por uma situação difícil? Se sim, <span class="highlight">você pode se qualificar para um desconto.</span></p>
+    
+    <p>Digite o motivo da dificuldade abaixo e clique em Aplicar:</p>
+    <textarea placeholder="Escreva aqui seu motivo..."></textarea>
+
+    <div class="flex-buttons">
+      <button class="btn-popup-no" onclick="fecharPopup()">
+        Não, não preciso que o Padre Paulo reze por mim.
+      </button>
+
+      
+      <a href="https://pay.cakto.com.br/36obgz2" class="btn-popup-apply">Aplicar ao Meu Desconto</a>
+</div>
+  </div>
+</div>
+
+<script>
+  // O VSLplay controla quando os elementos ocultos aparecem.
+  // Depois que aparecerem uma vez, não somem mais.
+  var vslplayButtonAlreadyShown = false;
+  var hiddenSelector = ".esconder";
+
+  function mostrarElementosOcultos() {
+    document.querySelectorAll(hiddenSelector).forEach(function(el) {
+      el.style.display = "block";
+    });
+  }
+
+  window.addEventListener("message", function(e) {
+    if (e.origin === "https://iframe.vslplay.com" && e.data && e.data.from === "vslplay-player") {
+      var content = document.querySelector('[data-vslplay="35d19f4f-7b69-4333-8936-8d35a99e1929"]');
+
+      if (e.data.type === "height" && content) {
+        content.style.paddingTop = e.data.value ? "calc(177.7% + " + e.data.value + "px)" : "177.7%";
+      }
+
+      if (e.data.type === "button-visibility" && e.data.value === true) {
+        vslplayButtonAlreadyShown = true;
+        mostrarElementosOcultos();
+      }
+
+      if (vslplayButtonAlreadyShown) {
+        mostrarElementosOcultos();
+      }
+    }
+  });
+
+// Funções do Popup
+  function abrirPopup() {
+    document.getElementById('popupDesconto').style.display = 'flex';
+  }
+
+  function fecharPopup() {
+    document.getElementById('popupDesconto').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    let overlay = document.getElementById('popupDesconto');
+    if (event.target == overlay) {
+      fecharPopup();
+    }
+  }
+</script>
+
+</body>
+</html>
